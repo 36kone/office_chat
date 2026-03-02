@@ -1,23 +1,25 @@
+from uuid import UUID
+
 from django.core.paginator import Paginator
+
 from app.users.models import User
 
 
 class UserRepository:
-
     @staticmethod
     def create(data: dict) -> User:
         return User.objects.create(**data)
 
     @staticmethod
-    def get_by_id(user_id: int) -> User | None:
+    def get_by_id(user_id: UUID) -> User | None:
         return User.objects.filter(id=user_id).first()
 
     @staticmethod
-    def search(search: str | None, page: int, page_size: int = 10):
+    def search(keyword: str | None, page: int, page_size: int = 10):
         queryset = User.objects.all().order_by("-created_at")
 
-        if search:
-            queryset = queryset.filter(name__icontains=search)
+        if keyword:
+            queryset = queryset.filter(name__icontains=keyword)
 
         paginator = Paginator(queryset, page_size)
         page_obj = paginator.get_page(page)
