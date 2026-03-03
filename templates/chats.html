@@ -1,0 +1,211 @@
+{% load static %}
+<!doctype html>
+<html>
+    <head>
+        <title>Chat</title>
+        <style>
+            body {
+                margin: 0;
+                font-family: Arial, sans-serif;
+                background-color: #f5f7fa;
+            }
+
+            .container {
+                display: flex;
+                height: 100vh;
+            }
+
+            /* SIDEBAR */
+
+            .sidebar {
+                width: 320px;
+                background: #ffffff;
+                border-right: 1px solid #e5e7eb;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .sidebar-header {
+                padding: 15px;
+                display: flex;
+                gap: 10px;
+                border-bottom: 1px solid #eee;
+            }
+
+            .sidebar-header button {
+                padding: 6px 12px;
+                border: none;
+                background: #e5e7eb;
+                cursor: pointer;
+                border-radius: 20px;
+                font-size: 13px;
+            }
+
+            .sidebar-header .active {
+                background: #22c55e;
+                color: white;
+            }
+
+            .conversation-list {
+                flex: 1;
+                overflow-y: auto;
+            }
+
+            .conversation-item {
+                display: block;
+                padding: 15px;
+                border-bottom: 1px solid #f1f1f1;
+                text-decoration: none;
+                color: #111827;
+                transition: background 0.2s ease;
+            }
+
+            .conversation-item:hover {
+                background: #f9fafb;
+            }
+
+            .conversation-item .title {
+                font-weight: 600;
+                font-size: 14px;
+            }
+
+            .conversation-item .time {
+                font-size: 12px;
+                color: #6b7280;
+                margin-top: 4px;
+            }
+
+            /* CHAT AREA */
+
+            .chat-area {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                background: #f9fafb;
+            }
+
+            .chat-messages {
+                flex: 1;
+                padding: 25px;
+                overflow-y: auto;
+            }
+
+            .message {
+                background: white;
+                padding: 12px 15px;
+                border-radius: 8px;
+                margin-bottom: 15px;
+                max-width: 60%;
+                box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            }
+
+            .message strong {
+                font-size: 13px;
+                display: block;
+                margin-bottom: 5px;
+            }
+
+            .message p {
+                margin: 0;
+                font-size: 14px;
+            }
+
+            .message small {
+                font-size: 11px;
+                color: #9ca3af;
+            }
+
+            .chat-form {
+                display: flex;
+                border-top: 1px solid #e5e7eb;
+                background: white;
+            }
+
+            .chat-form input {
+                flex: 1;
+                padding: 15px;
+                border: none;
+                outline: none;
+                font-size: 14px;
+            }
+
+            .chat-form button {
+                padding: 15px 25px;
+                border: none;
+                background: #22c55e;
+                color: white;
+                cursor: pointer;
+                font-weight: bold;
+                transition: background 0.2s ease;
+            }
+
+            .chat-form button:hover {
+                background: #16a34a;
+            }
+
+            .empty-chat {
+                margin: auto;
+                font-size: 18px;
+                color: #6b7280;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <div class="sidebar-header">
+                    <button class="active">Todos</button>
+                    <button>Aguardando</button>
+                    <button>Em Atendimento</button>
+                </div>
+
+                <div class="conversation-list">
+                    {% for conversation in conversations %}
+                    <a
+                        href="{% url 'chat' conversation.id %}"
+                        class="conversation-item"
+                    >
+                        <div class="title">{{ conversation.title }}</div>
+                        <div class="time">
+                            {{ conversation.created_at|timesince }} atrás
+                        </div>
+                    </a>
+                    {% empty %}
+                    <p style="padding: 15px">Nenhuma conversa</p>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Chat Area -->
+            <div class="chat-area">
+                {% if active_conversation %}
+                <div class="chat-messages">
+                    {% for message in active_conversation.messages.all %}
+                    <div class="message">
+                        <strong>{{ message.user.username }}</strong>
+                        <p>{{ message.content }}</p>
+                        <small>{{ message.created_at }}</small>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <form method="post" class="chat-form">
+                    {% csrf_token %}
+                    <input
+                        type="text"
+                        name="content"
+                        placeholder="Digite sua mensagem..."
+                        autocomplete="off"
+                    />
+                    <button type="submit">Enviar</button>
+                </form>
+                {% else %}
+                <div class="empty-chat">
+                    Selecione uma conversa ou inicie um novo chat.
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </body>
+</html>

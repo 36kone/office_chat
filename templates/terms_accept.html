@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Termo de Uso Interno</title>
+
+        <style>
+            body {
+                background: #f6f7f9;
+                font-family: Arial;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+            }
+
+            .box {
+                background: white;
+                padding: 40px;
+                width: 600px;
+                border-radius: 12px;
+            }
+
+            .terms {
+                height: 200px;
+                overflow-y: scroll;
+                border: 1px solid #ddd;
+                padding: 15px;
+                margin-bottom: 20px;
+            }
+
+            button {
+                background: black;
+                color: white;
+                padding: 10px 20px;
+                border-radius: 25px;
+                border: none;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="box">
+            <h2>Termo de Uso Interno</h2>
+
+            <div class="terms">
+                Todas as mensagens enviadas neste sistema são monitoradas,
+                registradas e auditáveis pela empresa. O uso indevido poderá
+                gerar sanções internas.
+            </div>
+
+            <form method="POST">
+                {% csrf_token %}
+                <label>
+                    <input type="checkbox" required />
+                    Li e concordo com os termos.
+                </label>
+                <br /><br />
+                <button type="submit">Aceitar e continuar</button>
+            </form>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,76 @@
+<div class="modal" id="chatModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <div>Chat</div>
+            <div class="close" onclick="closeChat()">✖</div>
+        </div>
+
+        <div
+            style="
+                flex: 1;
+                padding: 20px;
+                overflow-y: auto;
+                background: #f5f5f5;
+            "
+        >
+            <div style="margin-bottom: 15px">
+                <div
+                    style="
+                        background: white;
+                        padding: 10px 15px;
+                        border-radius: 15px;
+                        width: max-content;
+                    "
+                >
+                    Olá! 👋
+                </div>
+            </div>
+
+            <div style="margin-bottom: 15px; text-align: right">
+                <div
+                    style="
+                        background: black;
+                        color: white;
+                        padding: 10px 15px;
+                        border-radius: 15px;
+                        width: max-content;
+                        margin-left: auto;
+                    "
+                >
+                    Oi, tudo bem?
+                </div>
+            </div>
+        </div>
+
+        <div
+            style="
+                padding: 15px;
+                display: flex;
+                gap: 10px;
+                border-top: 1px solid #ddd;
+            "
+        >
+            <input
+                type="text"
+                placeholder="Digite sua mensagem..."
+                style="
+                    flex: 1;
+                    padding: 10px;
+                    border-radius: 20px;
+                    border: 1px solid #ccc;
+                "
+            />
+            <button
+                style="
+                    background: black;
+                    color: white;
+                    border: none;
+                    padding: 10px 20px;
+                    border-radius: 20px;
+                "
+            >
+                Enviar
+            </button>
+        </div>
+    </div>
+</div>

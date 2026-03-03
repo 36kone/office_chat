@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Modal de Confirmação</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background: #f6f7f9;
+                margin: 0;
+                height: 100vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .modal {
+                display: none;
+                position: fixed;
+                inset: 0;
+                background: rgba(0, 0, 0, 0.4);
+                justify-content: center;
+                align-items: center;
+                z-index: 1000;
+            }
+
+            .modal-content {
+                background: white;
+                width: 400px;
+                padding: 25px 20px;
+                border-radius: 12px;
+                text-align: center;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            }
+
+            .modal-content p {
+                font-size: 16px;
+                margin-bottom: 25px;
+            }
+
+            .modal-actions {
+                display: flex;
+                justify-content: center; /* centraliza */
+                gap: 15px; /* distância menor entre os botões */
+            }
+
+            .btn-primary {
+                background: black;
+                color: white;
+                border: none;
+                padding: 10px 20px;
+                border-radius: 25px;
+                cursor: pointer;
+                min-width: 80px;
+            }
+
+            .btn-secondary {
+                background: #ddd;
+                border: none;
+                padding: 10px 20px;
+                border-radius: 25px;
+                cursor: pointer;
+                min-width: 80px;
+            }
+        </style>
+    </head>
+    <body>
+        <!-- BOTÃO DE TESTE -->
+        <button
+            onclick="
+                openConfirmModal(
+                    'Tem certeza que deseja deletar este item?',
+                    function () {
+                        alert('Ação executada!');
+                    },
+                )
+            "
+        >
+            Excluir
+        </button>
+
+        <!-- BOTÃO DE TESTE -->
+        <button
+            onclick="
+                openConfirmModal(
+                    'Tem certeza que deseja confirmar a ação?',
+                    function () {
+                        alert('Ação executada!');
+                    },
+                )
+            "
+        >
+            Confirmar
+        </button>
+
+        <!-- MODAL -->
+        <div class="modal" id="confirmModal">
+            <div class="modal-content">
+                <p id="confirmMessage">Mensagem de confirmação</p>
+                <div class="modal-actions">
+                    <button class="btn-secondary" id="confirmCancelBtn">
+                        Cancelar
+                    </button>
+                    <button class="btn-primary" id="confirmYesBtn">Sim</button>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const modal = document.getElementById("confirmModal");
+                const messageEl = document.getElementById("confirmMessage");
+                const yesBtn = document.getElementById("confirmYesBtn");
+                const cancelBtn = document.getElementById("confirmCancelBtn");
+
+                let callback = null;
+
+                window.openConfirmModal = function (message, cb) {
+                    messageEl.textContent = message;
+                    callback = cb;
+                    modal.style.display = "flex";
+                };
+
+                window.closeConfirmModal = function () {
+                    modal.style.display = "none";
+                    callback = null;
+                };
+
+                yesBtn.addEventListener("click", function () {
+                    if (callback) callback();
+                    closeConfirmModal();
+                });
+
+                cancelBtn.addEventListener("click", closeConfirmModal);
+
+                // Fecha se clicar fora do conteúdo
+                modal.addEventListener("click", function (e) {
+                    if (e.target === modal) closeConfirmModal();
+                });
+            });
+        </script>
+    </body>
+</html>
