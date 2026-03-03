@@ -1,0 +1,164 @@
+<button onclick="openUploadModal()">📎</button>
+
+<!-- MODAL -->
+<div class="modal" id="uploadModal">
+    <div class="upload-box">
+        <h2>Enviar Arquivo</h2>
+
+        <div class="drop-zone" id="dropZone">
+            <p>Arraste o arquivo aqui<br />ou clique para selecionar</p>
+            <input type="file" id="fileInput" />
+        </div>
+
+        <div id="previewArea" class="preview"></div>
+
+        <div class="actions">
+            <button
+                type="button"
+                onclick="closeUploadModal()"
+                class="btn-secondary"
+            >
+                Cancelar
+            </button>
+            <button type="button" onclick="submitFile()" class="btn-primary">
+                Enviar
+            </button>
+        </div>
+    </div>
+</div>
+
+<style>
+    .modal {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.4);
+        justify-content: center;
+        align-items: center;
+    }
+
+    .upload-box {
+        background: white;
+        width: 500px;
+        padding: 30px;
+        border-radius: 12px;
+        text-align: center;
+    }
+
+    .drop-zone {
+        border: 2px dashed #ccc;
+        padding: 40px;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    .drop-zone.dragover {
+        border-color: black;
+    }
+
+    .preview {
+        margin-top: 20px;
+    }
+
+    .preview img {
+        max-width: 100%;
+        border-radius: 8px;
+    }
+
+    .preview iframe {
+        width: 100%;
+        height: 250px;
+    }
+
+    .actions {
+        margin-top: 20px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .btn-primary {
+        background: black;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 25px;
+        border: none;
+        cursor: pointer;
+    }
+
+    .btn-secondary {
+        background: #ddd;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 25px;
+    }
+</style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const dropZone = document.getElementById("dropZone");
+        const fileInput = document.getElementById("fileInput");
+        const previewArea = document.getElementById("previewArea");
+
+        const blockedExtensions = ["exe", "bat", "cmd", "sh"];
+
+        dropZone.addEventListener("click", () => fileInput.click());
+
+        dropZone.addEventListener("dragover", (e) => {
+            e.preventDefault();
+            dropZone.classList.add("dragover");
+        });
+
+        dropZone.addEventListener("dragleave", () => {
+            dropZone.classList.remove("dragover");
+        });
+
+        dropZone.addEventListener("drop", (e) => {
+            e.preventDefault();
+            dropZone.classList.remove("dragover");
+            handleFile(e.dataTransfer.files[0]);
+        });
+
+        fileInput.addEventListener("change", () => {
+            handleFile(fileInput.files[0]);
+        });
+
+        function handleFile(file) {
+            previewArea.innerHTML = "";
+            if (!file) return;
+
+            const extension = file.name.split(".").pop().toLowerCase();
+
+            if (blockedExtensions.includes(extension)) {
+                alert("Tipo de arquivo não permitido.");
+                fileInput.value = "";
+                return;
+            }
+
+            if (file.type.startsWith("image/")) {
+                const img = document.createElement("img");
+                img.src = URL.createObjectURL(file);
+                previewArea.appendChild(img);
+            } else if (file.type === "application/pdf") {
+                const iframe = document.createElement("iframe");
+                iframe.src = URL.createObjectURL(file);
+                previewArea.appendChild(iframe);
+            } else {
+                previewArea.innerHTML =
+                    "<p><strong>" + file.name + "</strong></p>";
+            }
+        }
+    });
+
+    function openUploadModal() {
+        document.getElementById("uploadModal").style.display = "flex";
+    }
+
+    function closeUploadModal() {
+        document.getElementById("uploadModal").style.display = "none";
+    }
+
+    function submitFile() {
+        alert("Implementar envio no backend.");
+    }
+</script>

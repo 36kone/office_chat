@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Meu Perfil</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                background: #f6f7f9;
+            }
+
+            .container {
+                max-width: 600px;
+                margin: 50px auto;
+                background: white;
+                padding: 30px;
+                border-radius: 10px;
+                box-shadow: 0 4px 15px rgb(0 0 0 / 0.1);
+            }
+
+            h1 {
+                margin-bottom: 24px;
+                font-weight: bold;
+                font-size: 26px;
+            }
+
+            .avatar-preview {
+                display: flex;
+                align-items: center;
+                gap: 20px;
+                margin-bottom: 24px;
+            }
+
+            .avatar-preview img {
+                width: 100px;
+                height: 100px;
+                border-radius: 50%;
+                object-fit: cover;
+                border: 3px solid #ddd;
+            }
+
+            .upload-btn {
+                display: inline-block;
+                padding: 8px 15px;
+                background: black;
+                color: white;
+                border-radius: 25px;
+                cursor: pointer;
+                font-weight: bold;
+                font-size: 14px;
+            }
+
+            form {
+                display: flex;
+                flex-direction: column;
+                gap: 18px;
+            }
+
+            input[type="text"],
+            textarea {
+                width: 100%;
+                padding: 10px;
+                font-size: 14px;
+                border-radius: 8px;
+                border: 1px solid #ccc;
+                resize: vertical;
+                box-sizing: border-box;
+            }
+
+            textarea {
+                height: 80px;
+            }
+
+            button {
+                background: black;
+                color: white;
+                border: none;
+                padding: 12px 0;
+                border-radius: 25px;
+                cursor: pointer;
+                font-weight: bold;
+                font-size: 16px;
+            }
+
+            button:hover {
+                background: #222;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Meu Perfil</h1>
+            <form
+                method="POST"
+                action="{% url 'profile' %}"
+                enctype="multipart/form-data"
+            >
+                {% csrf_token %}
+                <div class="avatar-preview">
+                    <img
+                        id="avatarImg"
+                        src="{{ user.avatar_url }}"
+                        alt="Avatar"
+                    />
+                    <label class="upload-btn" for="avatarInput"
+                        >Alterar Foto</label
+                    >
+                    <input
+                        type="file"
+                        id="avatarInput"
+                        name="avatar"
+                        accept="image/*"
+                        style="display: none"
+                        onchange="previewAvatar(event)"
+                    />
+                </div>
+
+                <label for="name">Nome</label>
+                <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    value="{{ user.name }}"
+                    required
+                />
+
+                <label for="description">Descrição</label>
+                <textarea
+                    id="description"
+                    name="description"
+                    placeholder="Fale sobre você..."
+                >
+{{ user.description }}</textarea
+                >
+
+                <button type="submit">Salvar</button>
+            </form>
+        </div>
+
+        <script>
+            function previewAvatar(event) {
+                const output = document.getElementById("avatarImg");
+                output.src = URL.createObjectURL(event.target.files[0]);
+            }
+        </script>
+    </body>
+</html>
