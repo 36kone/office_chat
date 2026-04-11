@@ -7,6 +7,17 @@ from .auth.auth_schema import (
 )
 from .auth.token_schema import CreateToken, Token
 from .base import BaseSchema, TimestampedResponse
+from .chat.chat_schema import (
+    ChatMessageResponse,
+    ChatResponse,
+    ChatSearchRequest,
+    ChatUserResponse,
+    CreateChat,
+    CreateChatMessage,
+    CreateChatUser,
+    UpdateChat,
+    UpdateChatMessage,
+)
 from .message.message_schema import HealthMessageResponse, Message, UploadMessage
 from .pagination import PaginatedResponse
 from .user.user_schema import (
@@ -26,6 +37,13 @@ from .user.user_session_schema import (
 __all__ = [
     "BaseSchema",
     "ChangePasswordRequest",
+    "ChatMessageResponse",
+    "ChatResponse",
+    "ChatSearchRequest",
+    "ChatUserResponse",
+    "CreateChat",
+    "CreateChatMessage",
+    "CreateChatUser",
     "CreateSessionSchema",
     "CreateToken",
     "CreateUser",
@@ -38,6 +56,8 @@ __all__ = [
     "SimpleUserResponse",
     "TimestampedResponse",
     "Token",
+    "UpdateChat",
+    "UpdateChatMessage",
     "UpdateUser",
     "UploadMessage",
     "UserResponse",
@@ -45,5 +65,5 @@ __all__ = [
     "UserSessionResponse",
     "UserSessionSearchRequest",
     "UserSessionUpdate",
-    "VerifyUserByPassword"
+    "VerifyUserByPassword",
 ]

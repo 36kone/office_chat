@@ -1,8 +1,11 @@
 import uuid
-from sqlalchemy import Column, String, Boolean, DateTime, ForeignKey, func, Text
+
+from sqlalchemy import Column, DateTime, ForeignKey, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
+
 from app.db.database import Base
+
 
 class ChatUser(Base):
     __tablename__ = "chat_users"
