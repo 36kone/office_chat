@@ -76,7 +76,8 @@ select = [
     "SIM", # simplify
     "RUF", # ruff rules
 ]
-ignore = ["E501"]
+
+ignore = ["E501", "B008"]
 
 [tool.ruff.lint.isort]
 known-first-party = ["app"]

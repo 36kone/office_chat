@@ -1,4 +1,3 @@
-from collections.abc import Callable
 from datetime import UTC, datetime
 from uuid import UUID
 
@@ -15,16 +14,8 @@ from app.core.security import decode_access_token
 from app.db.database import get_db
 from app.models import User, UserSession
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/core/v1/auth/login")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/login")
 bearer_scheme = HTTPBearer(auto_error=False)
-
-
-def _credentials_exception() -> HTTPException:
-    return HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Could not validate credentials",
-        headers={"WWW-Authenticate": "Bearer"},
-    )
 
 
 def get_mfa_user(
@@ -142,14 +133,3 @@ def auth_guard(
         profile_id = getattr(getattr(user, "profile", None), "id", None)
         if profile_id not in profiles:
             raise HTTPException(status_code=403, detail="Forbidden")
-
-
-def required_permissions(
-    *, roles: list[str] | None = None, profiles: list[str] | None = None
-) -> Callable:
-    def decorator(func: Callable):
-        func.__required_roles__ = roles or []
-        func.__required_profiles__ = profiles or []
-        return func
-
-    return decorator

@@ -18,7 +18,7 @@ class Settings(BaseSettings):
     MAIL_USER: str = ""
     MAIL_PASS: str = ""
     MAIL_FROM: str = "a@a.com"
-
+    OFFICE_CHAT_URL: str = ""
 
 
 settings = Settings()
