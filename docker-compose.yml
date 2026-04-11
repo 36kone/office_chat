@@ -1,0 +1,20 @@
+services:
+  app:
+    container_name: office-chat-service
+    build: .
+    environment:
+      - MODE=web
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+
+  background:
+    container_name: office-chat-service-background
+    build: .
+    environment:
+      - MODE=background
+    ports:
+      - "8081:8081"
+    env_file:
+      - .env
