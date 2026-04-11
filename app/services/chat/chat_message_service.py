@@ -1,7 +1,7 @@
 from uuid import UUID
 
 from sqlalchemy import select
-from sqlalchemy.orm import Session as DBSession
+from sqlalchemy.orm import Session as DBSession, joinedload
 
 from app.core.exception_utils import ensure_400
 from app.models import ChatMessage, ChatUser
@@ -29,11 +29,18 @@ class MessageService:
         )
         self.session.add(message)
         self.session.commit()
-        return message
+        
+        # Recarrega com o sender
+        return self.session.scalar(
+            select(ChatMessage)
+            .options(joinedload(ChatMessage.sender))
+            .where(ChatMessage.id == message.id)
+        )
 
     def get_chat_history(self, chat_id: UUID, size: int = 50, page: int = 1):
         query = (
             self.session.query(ChatMessage)
+            .options(joinedload(ChatMessage.sender))
             .filter(ChatMessage.chat_id == chat_id, ChatMessage.deleted_at.is_(None))
             .order_by(ChatMessage.created_at.desc())
         )
